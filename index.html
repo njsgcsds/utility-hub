@@ -40,11 +40,20 @@
         </div>
     </header>
 
-    <!-- 主體框架 (左側選單 + 右側內容) -->
+    <!-- 廣告版位 1：導航選單下方 (全寬橫幅) -->
+    <div class="max-w-7xl mx-auto px-6 w-full pt-4">
+        <div class="border border-slate-800/60 bg-slate-900/20 rounded-2xl p-3 text-center text-slate-600 text-[11px] flex justify-between items-center">
+            <span class="uppercase tracking-wider">Sponsored Ad</span>
+            <!-- 你的 Google AdSense 或其他廣告碼可貼在下方 -->
+            <span class="text-slate-700">Top Banner Ad Space</span>
+        </div>
+    </div>
+
+    <!-- 主體框架 (左側選單 + 右側內容 + 右側欄廣告) -->
     <div class="max-w-7xl mx-auto px-6 py-8 flex-grow w-full flex flex-col md:flex-row gap-8 items-start">
 
         <!-- 左側選單列 -->
-        <aside class="w-full md:w-64 bg-slate-900/60 border border-slate-800/80 rounded-2xl p-4 sticky top-24 shrink-span space-y-2">
+        <aside class="w-full md:w-64 bg-slate-900/60 border border-slate-800/80 rounded-2xl p-4 sticky top-24 shrink-0 space-y-2">
             <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider px-3 mb-2" data-i18n="menuTitle">導航選單</div>
             <button onclick="switchCategory('all')" id="navAll" class="nav-btn w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-medium transition bg-cyan-500 text-slate-950 flex items-center space-x-3 shadow">
                 <i class="fa-solid fa-border-all w-4"></i><span data-i18n="navAll">全部工具 (12)</span>
@@ -67,7 +76,7 @@
         </aside>
 
         <!-- 右側動態內容區 -->
-        <main class="flex-1 w-full space-y-6">
+        <main class="flex-1 w-full space-y-6 min-w-0">
 
             <!-- 區塊一：工具箱主畫面 -->
             <div id="sectionTools" class="space-y-6">
@@ -313,13 +322,22 @@
             </div>
 
         </main>
+
+        <!-- 廣告版位 2：右側欄直式廣告 (在手機版隱藏，電腦版顯示) -->
+        <aside class="hidden xl:block w-64 bg-slate-900/40 border border-slate-800/80 rounded-2xl p-4 sticky top-24 shrink-0 text-center space-y-3">
+            <div class="text-[10px] text-slate-600 uppercase tracking-widest">Sponsored Ad</div>
+            <div class="h-96 bg-slate-950/60 border border-slate-800/60 rounded-xl flex items-center justify-center text-slate-700 text-xs p-4">
+                Sidebar Vertical Ad Space
+            </div>
+        </aside>
+
     </div>
 
-    <!-- 廣告放置區 -->
+    <!-- 廣告版位 3：頁面最下方 (Footer 上方) -->
     <footer class="max-w-7xl mx-auto px-6 w-full pb-4 mt-auto">
-        <div class="border border-slate-800/60 bg-slate-900/20 rounded-2xl p-4 text-center text-slate-600 text-xs">
-            <span>Sponsored Ad</span>
-            <!-- 你的 Google AdSense 廣告碼可以貼在下方 -->
+        <div class="border border-slate-800/60 bg-slate-900/20 rounded-2xl p-4 text-center text-slate-600 text-xs flex justify-between items-center">
+            <span class="uppercase tracking-wider">Sponsored Ad</span>
+            <span class="text-slate-700">Footer Banner Ad Space</span>
         </div>
     </footer>
 
@@ -330,7 +348,6 @@
 
     <!-- 互動與多國語系邏輯 -->
     <script>
-        // 多國語系對照字典
         const translations = {
             zh: {
                 pageTitle: "Utility Hub - 全方位工具與趣味大雜燴",
@@ -473,7 +490,6 @@
                 t3Title: "割り勘（AA）計算機",
                 t3Placeholder1: "合計金額",
                 t3Placeholder2: "人数",
-    aff: "一人あたり：",
                 t3Lbl: "一人あたり：",
                 t4Title: "QRコード作成",
                 t4Placeholder: "URLやテキストを入力...",
@@ -573,7 +589,6 @@
 
         let currentLang = 'zh';
 
-        // 語系切換核心函式
         function changeLanguage(lang) {
             currentLang = lang;
             const t = translations[lang];
@@ -581,25 +596,21 @@
             document.getElementById('pageTitle').innerText = t.pageTitle;
             document.getElementById('globalSearch').placeholder = t.searchPlaceholder;
 
-            // 替換所有帶有 data-i18n 屬性的文字
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if (t[key]) el.innerText = t[key];
             });
 
-            // 替換所有帶有 placeholder 的輸入框
             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
                 const key = el.getAttribute('data-i18n-placeholder');
                 if (t[key]) el.placeholder = t[key];
             });
 
-            // 如果目前正在跑 MBTI 測驗，重新刷新當前題目以更新語系
             if (!document.getElementById('sectionQuiz').classList.contains('hidden') && currentQ < mbtiQuestions.length) {
                 loadQuiz();
             }
         }
 
-        // 左側選單切換分類
         function switchCategory(cat) {
             const secTools = document.getElementById('sectionTools');
             const secQuiz = document.getElementById('sectionQuiz');
@@ -646,7 +657,6 @@
             });
         }
 
-        // 頂部即時搜尋工具
         function filterTools() {
             const query = document.getElementById('globalSearch').value.toLowerCase().trim();
             const cards = document.querySelectorAll('.tool-card');
@@ -664,7 +674,6 @@
             });
         }
 
-        // 工具邏輯
         function generatePassword() {
             const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&!";
             let pwd = "";
@@ -802,7 +811,6 @@
             }
         }
 
-        // MBTI 多國語系題目
         const mbtiData = {
             zh: [
                 { q: "參加大型社交活動後，你的能量狀態通常是？", o1: "認識了很多新朋友，覺得充滿活力 (E)", o2: "社交好消耗體力，回家只想安靜獨處 (I)", t1: "E", t2: "I" },
@@ -908,4 +916,4 @@
         loadQuiz();
     </script>
 </body>
-</html>
+</html> 
